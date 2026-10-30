@@ -1,0 +1,51 @@
+openapi: 3.1.0
+info:
+  title: echo-server platform API
+  version: 0.0.0
+  description: |
+    《回波》平台服的 HTTP 接口契约。Unity 客户端和战斗服都按这份契约调用。
+    每个阶段新增的接口都在这里补上，不兼容的改动换成新的 URL 前缀（/v2）。
+servers:
+  - url: http://localhost:8080
+    description: 本地开发
+paths:
+  /healthz:
+    get:
+      summary: 存活检查
+      description: 进程在运行就返回 200，不检查数据库和 Redis，给容器编排和负载均衡做存活探测用。
+      operationId: getHealthz
+      tags: [ops]
+      responses:
+        '200':
+          description: 进程存活
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+components:
+  schemas:
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+    Problem:
+      description: RFC 9457 Problem Details，所有错误响应都用这个格式（application/problem+json）。
+      type: object
+      required: [type, title, status]
+      properties:
+        type:
+          type: string
+          format: uri-reference
+          description: 错误类型的标识，比如 /problems/invalid-credentials
+        title:
+          type: string
+          description: 错误类型的简短说明
+        status:
+          type: integer
+          description: HTTP 状态码
+        detail:
+          type: string
+          description: 这一次错误的具体说明
