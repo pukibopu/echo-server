@@ -1,0 +1,32 @@
+# ---- 构建产物 ----
+# CMake 构建目录：构建目录在仓库里的 build/<预设名>，下面几条防止误提交
+build/
+out/
+cmake-build-*/
+# vcpkg 清单模式在源码目录里生成的依赖安装目录
+vcpkg_installed/
+# clangd 用的编译数据库，从构建目录链接过来，每台机器路径不同
+compile_commands.json
+
+# ---- 本地配置和密钥（公开仓库，绝不能提交）----
+# 环境变量文件里有数据库密码等密钥，只提交示例文件 .env.example
+.env
+.env.*
+!.env.example
+# 真实配置文件不提交，只提交 *.example.json
+config/*.json
+!config/*.example.json
+
+# ---- 本地协作文件 ----
+# CLAUDE.md 是指向私有仓库 echo-server-private 的符号链接
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+
+# ---- IDE 和系统文件 ----
+.vscode/
+.idea/
+.vs/
+*.swp
+.DS_Store
+Thumbs.db

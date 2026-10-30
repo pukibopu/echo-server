@@ -1,0 +1,11 @@
+# 所有文本文件在仓库里和检出到工作区时都用 LF 换行；会覆盖 Windows 上 core.autocrlf=true 的转换
+* text=auto eol=lf
+
+# Windows 专用脚本保留 CRLF，否则 cmd 和 PowerShell 可能解析出错
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# 二进制文件不做换行转换，也不做文本 diff
+*.png binary
+*.jpg binary

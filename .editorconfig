@@ -1,0 +1,19 @@
+# 统一各种编辑器的编码、换行和缩进；C++ 的细节格式另由 clang-format 管
+root = true
+
+# 所有文件：UTF-8、LF 换行、结尾留一个空行、去掉行尾空格、空格缩进
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Markdown 行尾的两个空格表示强制换行，不能自动去掉
+[*.md]
+trim_trailing_whitespace = false
+
+# Makefile 规定必须用 Tab 缩进
+[Makefile]
+indent_style = tab
