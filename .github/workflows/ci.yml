@@ -33,6 +33,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Remove the runner's MySQL client headers
+        run: |
+          sudo apt-get remove -y libmysqlclient-dev
+          test ! -e /usr/include/mysql/mysql.h
+
       - name: Set up vcpkg at the pinned baseline
         run: |
           baseline=$(jq -r '."builtin-baseline"' vcpkg.json)
