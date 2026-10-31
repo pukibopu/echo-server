@@ -1,0 +1,19 @@
+Language: Cpp
+BasedOnStyle: Google
+Standard: c++20
+
+DerivePointerAlignment: false
+PointerAlignment: Left
+
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: "^<(drogon|trantor|json|gtest|gmock)/"
+    Priority: 3
+  - Regex: '^<sodium\.h>$'
+    Priority: 3
+  - Regex: '^<.*\.h>$'
+    Priority: 1
+  - Regex: "^<.*>$"
+    Priority: 2
+  - Regex: ".*"
+    Priority: 4
