@@ -12,10 +12,14 @@ Platform backend for ECHO (回波): accounts, room codes, matchmaking, dedicated
 ```bash
 cp .env.example .env          # 再把里面的密码改掉
 docker compose up -d --wait   # 启动 MySQL 和 Redis
+set -a && . ./.env && set +a  # 把 .env 里的变量导出到当前终端
 cmake --preset debug && cmake --build --preset debug
 ctest --preset debug -L unit
-./build/debug/apps/platform/echo-platform
+ctest --preset debug -L integration   # 要连上面启动的 MySQL 和 Redis
+./build/debug/apps/platform/echo-platform config/platform.example.json
 ```
+
+平台服的设置在 `config/platform.example.json` 里，要改就复制一份 `config/platform.json` 再改（这个文件不会被提交）。MySQL 密码只从环境变量 `MYSQL_PASSWORD` 读。启动时连不上 MySQL 或 Redis，会打印原因并退出。
 
 ## 版权
 
