@@ -30,6 +30,32 @@ jobs:
       fail-fast: false
       matrix:
         preset: [debug, release, asan]
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+          MYSQL_DATABASE: echo
+          MYSQL_USER: echo
+          MYSQL_PASSWORD: ci-only-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 --silent"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 30
+      redis:
+        image: redis:7.4-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      MYSQL_PASSWORD: ci-only-password
     steps:
       - uses: actions/checkout@v7
 
@@ -69,10 +95,13 @@ jobs:
       - name: Unit tests
         run: ctest --preset ${{ matrix.preset }} -L unit
 
+      - name: Integration tests
+        run: ctest --preset ${{ matrix.preset }} -L integration
+
       - name: Smoke test GET /healthz
         if: matrix.preset == 'debug'
         run: |
-          ./build/debug/apps/platform/echo-platform &
+          ./build/debug/apps/platform/echo-platform config/platform.example.json &
           server_pid=$!
           trap 'kill "$server_pid"' EXIT
           curl --fail --silent --show-error --retry 20 --retry-connrefused --retry-delay 1 \
