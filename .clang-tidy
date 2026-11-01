@@ -45,3 +45,4 @@ CheckOptions:
   readability-identifier-naming.EnumConstantPrefix: k
   readability-identifier-naming.MacroDefinitionCase: UPPER_CASE
   readability-identifier-naming.MacroDefinitionIgnoredRegexp: "^[A-Z0-9_]+_H_$"
+  concurrency-mt-unsafe.FunctionSet: glibc
